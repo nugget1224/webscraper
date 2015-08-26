@@ -8,5 +8,14 @@ url <- html("http://www.big12sports.com/SportSelect.dbml?SPSID=106580&SPID=13139
 selector_name <- "#schedule-table .media a:nth-child(5)"
 Codes <- html_nodes(url, selector_name) %>%
   html_attr("href") %>%
-  strsplit(., "&") %>%
-  data.frame()
+  strsplit(., "=") %>%
+  unlist() %>%
+  matrix(., byrow=TRUE)
+
+# Removes a wrong link
+Codes <- Codes[-181,]
+
+# Isolates the Team Codes
+Codes <- matrix(Codes, ncol=3, byrow=TRUE)
+Codes <- Codes[,-1:-2]
+IsoCodes <- as.data.frame(Codes)
